@@ -29,13 +29,4 @@ public abstract class BasePlayer implements Player {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
