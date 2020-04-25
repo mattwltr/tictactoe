@@ -21,7 +21,7 @@ public class Game implements Cloneable {
     protected Player player1;
     protected Player player2;
 
-    public void move(@NotNull Player player, @Min(1) @Max(9) short fieldNumber) {
+    public void move(@NotNull Player player, @Min(1) @Max(9) int fieldNumber) {
         if (!player.equals(player1) && !player.equals(player2)) {
             throw new IllegalArgumentException("Player is not in the game");
         }
@@ -69,7 +69,7 @@ public class Game implements Cloneable {
         }
     }
 
-    private Stream<Short> getFieldNumberStream(@NotNull Player player) {
+    private Stream<Integer> getFieldNumberStream(@NotNull Player player) {
         return moves.parallelStream().filter(move -> move.getPlayer().equals(player)).map(Move::getFieldNumber);
     }
 
@@ -96,12 +96,11 @@ public class Game implements Cloneable {
     /**
      * @return a list of playable field numbers
      */
-    public List<Short> getFreeFieldNumbers() {
+    public List<Integer> getFreeFieldNumbers() {
         return IntStream.rangeClosed(1, 9)
                 .boxed()
                 .parallel()
-                .map(Integer::shortValue)
-                .filter(shortValue -> moves.parallelStream().map(Move::getFieldNumber).noneMatch(fieldNumber -> fieldNumber == shortValue.shortValue()))
+                .filter(integer -> moves.parallelStream().map(Move::getFieldNumber).noneMatch(fieldNumber -> fieldNumber == integer.intValue()))
                 .collect(Collectors.toList());
     }
 
@@ -120,8 +119,8 @@ public class Game implements Cloneable {
                 """.replaceAll("\\{([0-8])}", " {$1} ");
 
         List<String> variables = new LinkedList<>();
-        for (short i = 0; i < 9; i++) {
-            final short fieldNumber = (short) (i + 1);
+        for (int i = 0; i < 9; i++) {
+            final int fieldNumber = i + 1;
             String characterToPrint = moves.parallelStream()
                     .filter(move -> move.getFieldNumber() == fieldNumber)
                     .map(move -> "\033[1;30m" + getSymbol(move.getPlayer()) + "\033[0m")
@@ -179,7 +178,7 @@ public class Game implements Cloneable {
         return moves.isEmpty() ? Optional.empty() : moves.stream().skip(moves.size() - 1).findFirst();
     }
 
-    public Optional<Move> getMove(short fieldNumber) {
+    public Optional<Move> getMove(int fieldNumber) {
         return moves.parallelStream().filter(move -> move.getFieldNumber() == fieldNumber).findFirst();
     }
 
@@ -190,7 +189,7 @@ public class Game implements Cloneable {
     public String getBoardHash() {
         return IntStream.rangeClosed(1, 9)
                 .boxed()
-                .map(integer -> getMove(integer.shortValue()).map(move -> move.getPlayer().equals(player1) ? "x" : "o").orElse("-"))
+                .map(integer -> getMove(integer).map(move -> move.getPlayer().equals(player1) ? "x" : "o").orElse("-"))
                 .collect(Collectors.joining());
     }
 

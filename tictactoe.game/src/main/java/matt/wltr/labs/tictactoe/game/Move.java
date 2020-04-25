@@ -4,9 +4,9 @@ public class Move {
 
     private final Player player;
 
-    private final short fieldNumber;
+    private final int fieldNumber;
 
-    public Move(Player player, short fieldNumber) {
+    public Move(Player player, int fieldNumber) {
         this.player = player;
         this.fieldNumber = fieldNumber;
     }
@@ -15,7 +15,7 @@ public class Move {
         return player;
     }
 
-    public short getFieldNumber() {
+    public int getFieldNumber() {
         return fieldNumber;
     }
 }

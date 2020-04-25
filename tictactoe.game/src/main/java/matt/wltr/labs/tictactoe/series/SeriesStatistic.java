@@ -16,7 +16,6 @@ public class SeriesStatistic {
     }
 
     public static SeriesStatistic ofSeries(GameSeries gameSeries) {
-
         SeriesStatistic seriesStatistic = new SeriesStatistic();
         int i = 1;
         for (Game game : gameSeries.getGames()) {

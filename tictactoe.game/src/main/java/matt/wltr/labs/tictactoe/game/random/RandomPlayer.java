@@ -20,7 +20,7 @@ public class RandomPlayer extends BasePlayer {
 
     @Override
     public void move() {
-        short fieldToPlay = game.getFreeFieldNumbers().get(new java.util.Random().nextInt(game.getFreeFieldNumbers().size()));
+        int fieldToPlay = game.getFreeFieldNumbers().get(new java.util.Random().nextInt(game.getFreeFieldNumbers().size()));
         System.out.println(fieldToPlay);
         game.move(this, fieldToPlay);
     }

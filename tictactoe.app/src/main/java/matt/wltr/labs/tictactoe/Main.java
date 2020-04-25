@@ -5,19 +5,21 @@ import matt.wltr.labs.tictactoe.game.random.RandomPlayer;
 import matt.wltr.labs.tictactoe.series.GameSeries;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
+    private static final int DEFAULT_REPETITIONS = 1000;
+
     public static void main(String... args) {
 
-        GameSeries miniMaxVsRandom = new GameSeries();
-        miniMaxVsRandom.start(MiniMaxPlayer.class, RandomPlayer.class, 5000);
+        List<GameSeries> seriesList = new ArrayList<>();
+        seriesList.add(new GameSeries(MiniMaxPlayer.class, RandomPlayer.class, DEFAULT_REPETITIONS));
+        seriesList.add(new GameSeries(RandomPlayer.class, MiniMaxPlayer.class, DEFAULT_REPETITIONS));
 
-        GameSeries randomVsMiniMax = new GameSeries();
-        randomVsMiniMax.start(RandomPlayer.class, MiniMaxPlayer.class, 5000);
-
-        miniMaxVsRandom.printResults();
-        randomVsMiniMax.printResults();
+        seriesList.forEach(GameSeries::start);
+        seriesList.forEach(GameSeries::printResults);
 
         promptExit();
     }

@@ -2,3 +2,4 @@
 tictactoe.game/target
 tictactoe.app/target
 *.iml
+/db/matt.wltr.labs.tictactoe.game.minimax.MiniMaxGame

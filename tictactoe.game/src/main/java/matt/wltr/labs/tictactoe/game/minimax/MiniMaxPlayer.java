@@ -17,7 +17,7 @@ public class MiniMaxPlayer extends BasePlayer {
     @Override
     public void move() {
         MiniMaxGame miniMaxGame = new MiniMaxGame(game);
-        short fieldToPlay = miniMaxGame.getFieldNumberForNextBestMove().orElseThrow();
+        int fieldToPlay = miniMaxGame.getFieldNumberForNextBestMove().orElseThrow();
         System.out.println(fieldToPlay);
         game.move(this, fieldToPlay);
     }

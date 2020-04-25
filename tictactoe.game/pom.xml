@@ -18,6 +18,7 @@
             <artifactId>jakarta.validation-api</artifactId>
             <version>2.0.2</version>
             <scope>compile</scope>
+            <!-- JSR 380 API -->
         </dependency>
 
         <dependency>
@@ -25,6 +26,15 @@
             <artifactId>yasson</artifactId>
             <version>1.0.7</version>
             <scope>compile</scope>
+            <!-- JSR 367 SPI -->
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapdb</groupId>
+            <artifactId>mapdb</artifactId>
+            <version>3.0.8</version>
+            <scope>compile</scope>
+            <!-- https://jankotek.gitbooks.io/mapdb/content/ -->
         </dependency>
 
     </dependencies>

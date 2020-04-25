@@ -25,13 +25,18 @@ public class GameSeries {
 
     private final LinkedHashSet<Game> games = new LinkedHashSet<>();
 
-    private Class<? extends Player> player1Class;
-    private Class<? extends Player> player2Class;
+    private final Class<? extends BasePlayer> player1Class;
+    private final Class<? extends BasePlayer> player2Class;
+    private final int repetitions;
 
-    public void start(Class<? extends BasePlayer> player1Class, Class<? extends BasePlayer> player2Class, int repetitions) {
-        games.clear();
+    public GameSeries(Class<? extends BasePlayer> player1Class, Class<? extends BasePlayer> player2Class, int repetitions) {
         this.player1Class = player1Class;
         this.player2Class = player2Class;
+        this.repetitions = repetitions;
+    }
+
+    public void start() {
+        games.clear();
         for (int i = 0; i < repetitions; i++) {
             System.out.println(MessageFormat.format("\nGame {0}", i + 1));
             Game game = new Game();

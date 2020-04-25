@@ -26,7 +26,7 @@ public class HumanPlayer extends BasePlayer {
     public void move() {
         String input = new Scanner(System.in).next();
         if (INPUT_PATTERN.matcher(input).matches()) {
-            game.move(this, Short.parseShort(input));
+            game.move(this, Integer.parseInt(input));
         }
     }
 
