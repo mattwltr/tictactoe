@@ -1,4 +1,4 @@
-package matt.wltr.labs.tictactoe.game.minimax;
+package matt.wltr.labs.tictactoe.player.minimax;
 
 import matt.wltr.labs.tictactoe.game.Game;
 import matt.wltr.labs.tictactoe.game.Move;
@@ -25,14 +25,6 @@ class MiniMaxGame extends Game {
         NEXT_BEST_MOVES = DB
                 .hashMap("nextBestMoves", Serializer.STRING, Serializer.INT_ARRAY)
                 .createOrOpen();
-    }
-
-    MiniMaxGame(Game game) {
-        player1 = game.getPlayer1().clone(this);
-        player2 = game.getPlayer2().clone(this);
-        moves.addAll(game.getMoves().stream()
-                .map(move -> new Move(move.getPlayer().equals(game.getPlayer1()) ? player1 : player2, move.getFieldNumber()))
-                .collect(Collectors.toList()));
     }
 
     Optional<Integer> getFieldNumberForNextBestMove() {
@@ -86,7 +78,12 @@ class MiniMaxGame extends Game {
             return new ArrayList<>();
         }
         return getFreeFieldNumbers().parallelStream().map(fieldNumber -> {
-            MiniMaxGame possibleNextGame = new MiniMaxGame(clone());
+            MiniMaxGame possibleNextGame = new MiniMaxGame();
+            possibleNextGame.setPlayers(new MiniMaxPlayer(player1.getGame()), new MiniMaxPlayer(player2.getGame()));
+            getMoves().forEach(move -> {
+                matt.wltr.labs.tictactoe.player.Player player = move.getPlayer().equals(getPlayer1()) ? possibleNextGame.getPlayer1() : possibleNextGame.getPlayer2();
+                possibleNextGame.move(player, move.getFieldNumber());
+            });
             possibleNextGame.getPlayerForNextMove().ifPresent(player -> possibleNextGame.move(player, fieldNumber));
             return possibleNextGame;
         }).collect(Collectors.toList());

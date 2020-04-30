@@ -7,8 +7,9 @@ module matt.wltr.labs.tictactoe.game {
     requires mapdb;
 
     exports matt.wltr.labs.tictactoe.game;
-    exports matt.wltr.labs.tictactoe.game.human;
-    exports matt.wltr.labs.tictactoe.game.minimax;
-    exports matt.wltr.labs.tictactoe.game.random;
-    exports matt.wltr.labs.tictactoe.series;
+    exports matt.wltr.labs.tictactoe.player;
+    exports matt.wltr.labs.tictactoe.player.human;
+    exports matt.wltr.labs.tictactoe.player.minimax;
+    exports matt.wltr.labs.tictactoe.player.random;
+    exports matt.wltr.labs.tictactoe.game.series;
 }

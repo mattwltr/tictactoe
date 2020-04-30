@@ -1,5 +1,7 @@
 package matt.wltr.labs.tictactoe.game;
 
+import matt.wltr.labs.tictactoe.player.Player;
+
 public class Move {
 
     private final Player player;

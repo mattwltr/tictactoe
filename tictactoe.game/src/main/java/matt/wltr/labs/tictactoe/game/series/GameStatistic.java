@@ -1,4 +1,4 @@
-package matt.wltr.labs.tictactoe.series;
+package matt.wltr.labs.tictactoe.game.series;
 
 public class GameStatistic {
 

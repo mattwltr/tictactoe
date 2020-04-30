@@ -1,5 +1,7 @@
 package matt.wltr.labs.tictactoe.game;
 
+import matt.wltr.labs.tictactoe.player.Player;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -191,14 +193,6 @@ public class Game implements Cloneable {
                 .boxed()
                 .map(integer -> getMove(integer).map(move -> move.getPlayer().equals(player1) ? "x" : "o").orElse("-"))
                 .collect(Collectors.joining());
-    }
-
-    @Override
-    public Game clone() {
-        final Game game = new Game();
-        game.setPlayers(player1.clone(game), player2.clone(game));
-        moves.forEach(move -> game.moves.add(new Move(move.getPlayer().equals(player1) ? game.getPlayer1() : game.getPlayer2(), move.getFieldNumber())));
-        return game;
     }
 
     public enum Status {

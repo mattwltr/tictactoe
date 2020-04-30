@@ -1,4 +1,4 @@
-package matt.wltr.labs.tictactoe.series;
+package matt.wltr.labs.tictactoe.game.series;
 
 import matt.wltr.labs.tictactoe.game.Game;
 

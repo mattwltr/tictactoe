@@ -1,8 +1,7 @@
-package matt.wltr.labs.tictactoe.series;
+package matt.wltr.labs.tictactoe.game.series;
 
-import matt.wltr.labs.tictactoe.game.BasePlayer;
 import matt.wltr.labs.tictactoe.game.Game;
-import matt.wltr.labs.tictactoe.game.Player;
+import matt.wltr.labs.tictactoe.player.PlayerBuilder;
 import matt.wltr.labs.tictactoe.util.HttpServer;
 import matt.wltr.labs.tictactoe.util.Random;
 
@@ -25,13 +24,13 @@ public class GameSeries {
 
     private final LinkedHashSet<Game> games = new LinkedHashSet<>();
 
-    private final Class<? extends BasePlayer> player1Class;
-    private final Class<? extends BasePlayer> player2Class;
+    private final PlayerBuilder player1Builder;
+    private final PlayerBuilder player2Builder;
     private final int repetitions;
 
-    public GameSeries(Class<? extends BasePlayer> player1Class, Class<? extends BasePlayer> player2Class, int repetitions) {
-        this.player1Class = player1Class;
-        this.player2Class = player2Class;
+    public GameSeries(PlayerBuilder player1Builder, PlayerBuilder player2Builder, int repetitions) {
+        this.player1Builder = player1Builder;
+        this.player2Builder = player2Builder;
         this.repetitions = repetitions;
     }
 
@@ -40,7 +39,7 @@ public class GameSeries {
         for (int i = 0; i < repetitions; i++) {
             System.out.println(MessageFormat.format("\nGame {0}", i + 1));
             Game game = new Game();
-            game.setPlayers(BasePlayer.instance(player1Class, game), BasePlayer.instance(player2Class, game));
+            game.setPlayers(player1Builder.build(game), player2Builder.build(game));
             game.play();
             games.add(game);
         }
@@ -54,7 +53,7 @@ public class GameSeries {
         System.out.println("Player                        | P1 Win | P2 Win |   Draw | Evolution");
         System.out.println("=========================================================================================");
         System.out.println(String.format("%-30s| %5s%% | %5s%% | %5s%% | %s",
-                player1Class.getSimpleName().concat(" - ").concat(player2Class.getSimpleName()),
+                player1Builder.getType().getSimpleName().concat(" - ").concat(player2Builder.getType().getSimpleName()),
                 decimalFormat.format(seriesStatistic.getGameStatistics().get(seriesStatistic.getGameStatistics().size() - 1).getPercentagePlayer1Wins()),
                 decimalFormat.format(seriesStatistic.getGameStatistics().get(seriesStatistic.getGameStatistics().size() - 1).getPercentagePlayer2Wins()),
                 decimalFormat.format(seriesStatistic.getGameStatistics().get(seriesStatistic.getGameStatistics().size() - 1).getPercentageDraws()),
@@ -69,8 +68,8 @@ public class GameSeries {
             String chartTemplate = new BufferedReader(new InputStreamReader(templateInputStream)).lines().collect(Collectors.joining("\n"));
             String responseMarkup = chartTemplate
                     .replace("$seriesStatistic", JsonbBuilder.create().toJson(seriesStatistic))
-                    .replace("$player1", player1Class.getSimpleName())
-                    .replace("$player2", player2Class.getSimpleName());
+                    .replace("$player1", player1Builder.getType().getSimpleName())
+                    .replace("$player2", player2Builder.getType().getSimpleName());
             httpExchange.sendResponseHeaders(200, responseMarkup.length());
             OutputStream outputStream = httpExchange.getResponseBody();
             outputStream.write(responseMarkup.getBytes());

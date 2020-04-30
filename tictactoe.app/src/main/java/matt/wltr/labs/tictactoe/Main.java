@@ -1,8 +1,8 @@
 package matt.wltr.labs.tictactoe;
 
-import matt.wltr.labs.tictactoe.game.minimax.MiniMaxPlayer;
-import matt.wltr.labs.tictactoe.game.random.RandomPlayer;
-import matt.wltr.labs.tictactoe.series.GameSeries;
+import matt.wltr.labs.tictactoe.game.series.GameSeries;
+import matt.wltr.labs.tictactoe.player.minimax.MiniMaxPlayerBuilder;
+import matt.wltr.labs.tictactoe.player.random.RandomPlayerBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ public class Main {
     public static void main(String... args) {
 
         List<GameSeries> seriesList = new ArrayList<>();
-        seriesList.add(new GameSeries(MiniMaxPlayer.class, RandomPlayer.class, DEFAULT_REPETITIONS));
-        seriesList.add(new GameSeries(RandomPlayer.class, MiniMaxPlayer.class, DEFAULT_REPETITIONS));
+        seriesList.add(new GameSeries(new MiniMaxPlayerBuilder(), new RandomPlayerBuilder(), DEFAULT_REPETITIONS));
+        seriesList.add(new GameSeries(new RandomPlayerBuilder(), new MiniMaxPlayerBuilder(), DEFAULT_REPETITIONS));
 
         seriesList.forEach(GameSeries::start);
         seriesList.forEach(GameSeries::printResults);
