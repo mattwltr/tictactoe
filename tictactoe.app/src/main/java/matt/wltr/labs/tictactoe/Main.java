@@ -14,9 +14,12 @@ public class Main {
 
     public static void main(String... args) {
 
+        MiniMaxPlayerBuilder miniMaxPlayerBuilder = new MiniMaxPlayerBuilder();
+        RandomPlayerBuilder randomPlayerBuilder = new RandomPlayerBuilder();
+
         List<GameSeries> seriesList = new ArrayList<>();
-        seriesList.add(new GameSeries(new MiniMaxPlayerBuilder(), new RandomPlayerBuilder(), DEFAULT_REPETITIONS));
-        seriesList.add(new GameSeries(new RandomPlayerBuilder(), new MiniMaxPlayerBuilder(), DEFAULT_REPETITIONS));
+        seriesList.add(new GameSeries(miniMaxPlayerBuilder, randomPlayerBuilder, DEFAULT_REPETITIONS));
+        seriesList.add(new GameSeries(randomPlayerBuilder, miniMaxPlayerBuilder, DEFAULT_REPETITIONS));
 
         seriesList.forEach(GameSeries::start);
         seriesList.forEach(GameSeries::printResults);
