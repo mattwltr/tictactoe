@@ -6,6 +6,8 @@ import matt.wltr.labs.tictactoe.player.Player;
 import matt.wltr.labs.tictactoe.player.minimax.game.MiniMaxGame;
 
 import javax.validation.constraints.NotNull;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The {@code MiniMaxPlayer} is based on the <a href="https://en.wikipedia.org/wiki/Minimax">Minimax</a> algorithm. It never loses a game.
@@ -13,6 +15,8 @@ import javax.validation.constraints.NotNull;
  * Note: The player will get faster the more games are played.
  */
 public class MiniMaxPlayer extends BasicPlayer {
+
+    private final static Logger LOGGER = Logger.getLogger(MiniMaxPlayer.class.getName());
 
     public MiniMaxPlayer(@NotNull Game game) {
         super(game);
@@ -27,7 +31,7 @@ public class MiniMaxPlayer extends BasicPlayer {
             miniMaxGame.move(player, move.getFieldNumber());
         });
         int fieldToPlay = miniMaxGame.getFieldNumberForNextBestMove().orElseThrow();
-        System.out.println(fieldToPlay);
+        LOGGER.log(Level.INFO, String.valueOf(fieldToPlay));
         game.move(this, fieldToPlay);
     }
 }

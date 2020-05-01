@@ -12,11 +12,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Game {
+
+    protected final static Logger LOGGER = Logger.getLogger(Game.class.getName());
 
     protected final Set<Move> moves = new LinkedHashSet<>();
 
@@ -107,19 +111,18 @@ public class Game {
     }
 
     /**
-     * Print the current game state to stdout
+     * Log the current game state
      */
-    public void print() {
+    public void log() {
         String text = """
+                
                 ┌---┬-─-┬-─-┐
                 │{6}│{7}│{8}│
                 ├─-─┼───┼---┤
                 │{3}│{4}│{5}│
                 ├─-─┼───┼---┤
                 │{0}│{1}│{2}│
-                └─-─┴───┴---┘
-                """.replaceAll("\\{([0-8])}", " {$1} ");
-
+                └─-─┴───┴---┘""".replaceAll("\\{([0-8])}", " {$1} ");
         List<String> variables = new LinkedList<>();
         for (int i = 0; i < 9; i++) {
             final int fieldNumber = i + 1;
@@ -129,7 +132,7 @@ public class Game {
                     .findFirst().orElse("\033[0;37m" + (i + 1) + "\033[0m");
             variables.add(characterToPrint);
         }
-        System.out.print(MessageFormat.format(text, variables.toArray()));
+        LOGGER.log(Level.INFO, text, variables.toArray());
     }
 
     /**
@@ -137,16 +140,16 @@ public class Game {
      */
     public void play() {
         while (canContinue()) {
-            print();
+            log();
             getPlayerForNextMove().ifPresent(player -> {
-                System.out.print(MessageFormat.format("It''s your turn, {0}: ", String.valueOf(getSymbol(player))));
+                LOGGER.log(Level.INFO, "It''s your turn, {0}: ", String.valueOf(getSymbol(player)));
                 player.move();
             });
         }
-        print();
+        log();
         getWinner().ifPresentOrElse(
-                player -> System.out.println(MessageFormat.format("{0} won!", getSymbol(player))),
-                () -> System.out.println("It's a draw."));
+                player -> LOGGER.log(Level.INFO, "{0} won!", getSymbol(player)),
+                () -> LOGGER.log(Level.INFO,"It's a draw."));
     }
 
     /**

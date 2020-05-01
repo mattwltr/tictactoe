@@ -1,5 +1,6 @@
 module matt.wltr.labs.tictactoe.player.tabularquality {
 
+    requires java.logging;
     requires java.validation;
 
     requires matt.wltr.labs.tictactoe.game;

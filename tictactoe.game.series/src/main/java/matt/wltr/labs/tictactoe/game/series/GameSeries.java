@@ -18,9 +18,13 @@ import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class GameSeries {
+
+    protected final static Logger LOGGER = Logger.getLogger(GameSeries.class.getName());
 
     private final LinkedHashSet<Game> games = new LinkedHashSet<>();
 
@@ -37,7 +41,7 @@ public class GameSeries {
     public void start() {
         games.clear();
         for (int i = 0; i < repetitions; i++) {
-            System.out.println(MessageFormat.format("\nGame {0}", i + 1));
+            LOGGER.log(Level.INFO, "Game {0}", i + 1);
             Game game = new Game();
             game.setPlayers(player1Builder.build(game), player2Builder.build(game));
             game.play();
@@ -49,10 +53,9 @@ public class GameSeries {
         SeriesStatistic seriesStatistic = SeriesStatistic.ofSeries(this);
         URL evolutionChartUrl = serveEvolutionChart(seriesStatistic);
         DecimalFormat decimalFormat = new DecimalFormat("##0.0");
-        System.out.print("\n");
-        System.out.println("Player                        | P1 Win | P2 Win |   Draw | Evolution");
-        System.out.println("=========================================================================================");
-        System.out.println(String.format("%-30s| %5s%% | %5s%% | %5s%% | %s",
+        LOGGER.log(Level.INFO, "Player                        | P1 Win | P2 Win |   Draw | Evolution");
+        LOGGER.log(Level.INFO, "=========================================================================================");
+        LOGGER.log(Level.INFO, String.format("%-30s| %5s%% | %5s%% | %5s%% | %s",
                 player1Builder.getType().getSimpleName().concat(" - ").concat(player2Builder.getType().getSimpleName()),
                 decimalFormat.format(seriesStatistic.getGameStatistics().get(seriesStatistic.getGameStatistics().size() - 1).getPercentagePlayer1Wins()),
                 decimalFormat.format(seriesStatistic.getGameStatistics().get(seriesStatistic.getGameStatistics().size() - 1).getPercentagePlayer2Wins()),

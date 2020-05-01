@@ -1,5 +1,6 @@
 module matt.wltr.labs.tictactoe.player.minimax {
 
+    requires java.logging;
     requires java.validation;
     requires mapdb;
 

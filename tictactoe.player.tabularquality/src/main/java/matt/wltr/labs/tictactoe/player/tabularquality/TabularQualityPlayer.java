@@ -6,8 +6,11 @@ import matt.wltr.labs.tictactoe.util.Random;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.logging.Logger;
 
 public class TabularQualityPlayer extends BasicPlayer {
+
+    private final static Logger LOGGER = Logger.getLogger(TabularQualityPlayer.class.getName());
 
     private final String evolutionKey;
 

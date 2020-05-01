@@ -5,12 +5,23 @@ import matt.wltr.labs.tictactoe.player.minimax.MiniMaxPlayerBuilder;
 import matt.wltr.labs.tictactoe.player.random.RandomPlayerBuilder;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.LogManager;
 
 public class Main {
 
-    private static final int DEFAULT_REPETITIONS = 1000;
+    private static final int DEFAULT_REPETITIONS = 100;
+
+    static {
+        InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("logging.properties");
+        try {
+            LogManager.getLogManager().readConfiguration(inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static void main(String... args) {
 
@@ -19,7 +30,7 @@ public class Main {
 
         List<GameSeries> seriesList = new ArrayList<>();
         seriesList.add(new GameSeries(miniMaxPlayerBuilder, randomPlayerBuilder, DEFAULT_REPETITIONS));
-        seriesList.add(new GameSeries(randomPlayerBuilder, miniMaxPlayerBuilder, DEFAULT_REPETITIONS));
+//        seriesList.add(new GameSeries(randomPlayerBuilder, miniMaxPlayerBuilder, DEFAULT_REPETITIONS));
 
         seriesList.forEach(GameSeries::start);
         seriesList.forEach(GameSeries::printResults);
