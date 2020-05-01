@@ -14,7 +14,6 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -55,7 +54,7 @@ public class GameSeries {
         DecimalFormat decimalFormat = new DecimalFormat("##0.0");
         LOGGER.log(Level.INFO, "Player                        | P1 Win | P2 Win |   Draw | Evolution");
         LOGGER.log(Level.INFO, "=========================================================================================");
-        LOGGER.log(Level.INFO, String.format("%-30s| %5s%% | %5s%% | %5s%% | %s",
+        LOGGER.log(Level.INFO, String.format("%-30s| %5s%% | %5s%% | %5s%% | %s\n",
                 player1Builder.getType().getSimpleName().concat(" - ").concat(player2Builder.getType().getSimpleName()),
                 decimalFormat.format(seriesStatistic.getGameStatistics().get(seriesStatistic.getGameStatistics().size() - 1).getPercentagePlayer1Wins()),
                 decimalFormat.format(seriesStatistic.getGameStatistics().get(seriesStatistic.getGameStatistics().size() - 1).getPercentagePlayer2Wins()),

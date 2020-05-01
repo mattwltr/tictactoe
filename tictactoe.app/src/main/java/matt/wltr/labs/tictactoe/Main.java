@@ -12,7 +12,7 @@ import java.util.logging.LogManager;
 
 public class Main {
 
-    private static final int DEFAULT_REPETITIONS = 100;
+    private static final int DEFAULT_REPETITIONS = 1000;
 
     static {
         InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("logging.properties");
@@ -30,7 +30,7 @@ public class Main {
 
         List<GameSeries> seriesList = new ArrayList<>();
         seriesList.add(new GameSeries(miniMaxPlayerBuilder, randomPlayerBuilder, DEFAULT_REPETITIONS));
-//        seriesList.add(new GameSeries(randomPlayerBuilder, miniMaxPlayerBuilder, DEFAULT_REPETITIONS));
+        seriesList.add(new GameSeries(randomPlayerBuilder, miniMaxPlayerBuilder, DEFAULT_REPETITIONS));
 
         seriesList.forEach(GameSeries::start);
         seriesList.forEach(GameSeries::printResults);
