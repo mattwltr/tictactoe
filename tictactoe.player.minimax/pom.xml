@@ -12,12 +12,22 @@
     <artifactId>tictactoe.player.minimax</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>matt.wltr.labs</groupId>
             <artifactId>tictactoe.game</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.mapdb</groupId>
+            <artifactId>mapdb</artifactId>
+            <version>3.0.8</version>
+            <scope>compile</scope>
+            <!-- https://jankotek.gitbooks.io/mapdb/content/ -->
+        </dependency>
+
     </dependencies>
 
 </project>

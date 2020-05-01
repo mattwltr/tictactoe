@@ -1,6 +1,7 @@
 package matt.wltr.labs.tictactoe.game.series;
 
 import matt.wltr.labs.tictactoe.game.Game;
+import matt.wltr.labs.tictactoe.game.series.util.HttpServer;
 import matt.wltr.labs.tictactoe.player.PlayerBuilder;
 import matt.wltr.labs.tictactoe.util.Random;
 
