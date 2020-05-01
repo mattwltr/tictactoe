@@ -1,14 +1,16 @@
 package matt.wltr.labs.tictactoe.player.minimax;
 
-import matt.wltr.labs.tictactoe.player.BasicPlayer;
 import matt.wltr.labs.tictactoe.game.Game;
+import matt.wltr.labs.tictactoe.player.BasicPlayer;
 import matt.wltr.labs.tictactoe.player.Player;
+import matt.wltr.labs.tictactoe.player.minimax.game.MiniMaxGame;
 
 import javax.validation.constraints.NotNull;
 
 /**
- * The {@code MiniMaxPlayer} is based on the <a href="https://en.wikipedia.org/wiki/Minimax">Minimax</a> algorithm.
- * It never loses a game and it will get faster the more games are played.
+ * The {@code MiniMaxPlayer} is based on the <a href="https://en.wikipedia.org/wiki/Minimax">Minimax</a> algorithm. It never loses a game.
+ *
+ * Note: The player will get faster the more games are played.
  */
 public class MiniMaxPlayer extends BasicPlayer {
 

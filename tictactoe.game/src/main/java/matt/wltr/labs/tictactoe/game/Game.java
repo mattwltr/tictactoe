@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Game implements Cloneable {
+public class Game {
 
     protected final Set<Move> moves = new LinkedHashSet<>();
 

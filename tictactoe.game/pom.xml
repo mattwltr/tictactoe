@@ -12,7 +12,6 @@
     <artifactId>tictactoe.game</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
@@ -20,23 +19,6 @@
             <scope>compile</scope>
             <!-- JSR 380 API -->
         </dependency>
-
-        <dependency>
-            <groupId>org.eclipse</groupId>
-            <artifactId>yasson</artifactId>
-            <version>1.0.7</version>
-            <scope>compile</scope>
-            <!-- JSR 367 SPI -->
-        </dependency>
-
-        <dependency>
-            <groupId>org.mapdb</groupId>
-            <artifactId>mapdb</artifactId>
-            <version>3.0.8</version>
-            <scope>compile</scope>
-            <!-- https://jankotek.gitbooks.io/mapdb/content/ -->
-        </dependency>
-
     </dependencies>
 
     <build>

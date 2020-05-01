@@ -1,4 +1,4 @@
-package matt.wltr.labs.tictactoe.util;
+package matt.wltr.labs.tictactoe.game.series.util;
 
 import com.sun.net.httpserver.HttpHandler;
 

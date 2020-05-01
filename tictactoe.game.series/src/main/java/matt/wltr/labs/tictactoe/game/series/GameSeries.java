@@ -2,7 +2,6 @@ package matt.wltr.labs.tictactoe.game.series;
 
 import matt.wltr.labs.tictactoe.game.Game;
 import matt.wltr.labs.tictactoe.player.PlayerBuilder;
-import matt.wltr.labs.tictactoe.util.HttpServer;
 import matt.wltr.labs.tictactoe.util.Random;
 
 import javax.json.bind.JsonbBuilder;
@@ -24,11 +23,11 @@ public class GameSeries {
 
     private final LinkedHashSet<Game> games = new LinkedHashSet<>();
 
-    private final PlayerBuilder player1Builder;
-    private final PlayerBuilder player2Builder;
+    private final PlayerBuilder<?> player1Builder;
+    private final PlayerBuilder<?> player2Builder;
     private final int repetitions;
 
-    public GameSeries(PlayerBuilder player1Builder, PlayerBuilder player2Builder, int repetitions) {
+    public GameSeries(@NotNull PlayerBuilder<?> player1Builder, @NotNull PlayerBuilder<?> player2Builder, int repetitions) {
         this.player1Builder = player1Builder;
         this.player2Builder = player2Builder;
         this.repetitions = repetitions;

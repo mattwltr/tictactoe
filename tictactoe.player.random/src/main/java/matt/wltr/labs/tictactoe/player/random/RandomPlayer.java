@@ -1,7 +1,7 @@
 package matt.wltr.labs.tictactoe.player.random;
 
-import matt.wltr.labs.tictactoe.player.BasicPlayer;
 import matt.wltr.labs.tictactoe.game.Game;
+import matt.wltr.labs.tictactoe.player.BasicPlayer;
 
 import javax.validation.constraints.NotNull;
 

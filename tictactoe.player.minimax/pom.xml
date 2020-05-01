@@ -9,31 +9,15 @@
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>tictactoe.app</artifactId>
+    <artifactId>tictactoe.player.minimax</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>matt.wltr.labs</groupId>
-            <artifactId>tictactoe.game.series</artifactId>
+            <artifactId>tictactoe.game</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>
-
-        <dependency>
-            <groupId>matt.wltr.labs</groupId>
-            <artifactId>tictactoe.player.random</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>matt.wltr.labs</groupId>
-            <artifactId>tictactoe.player.minimax</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-
     </dependencies>
 
 </project>

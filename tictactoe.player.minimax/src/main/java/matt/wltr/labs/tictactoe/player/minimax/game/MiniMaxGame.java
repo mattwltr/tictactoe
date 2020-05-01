@@ -1,7 +1,8 @@
-package matt.wltr.labs.tictactoe.player.minimax;
+package matt.wltr.labs.tictactoe.player.minimax.game;
 
 import matt.wltr.labs.tictactoe.game.Game;
 import matt.wltr.labs.tictactoe.game.Move;
+import matt.wltr.labs.tictactoe.player.minimax.MiniMaxPlayer;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.mapdb.Serializer;
@@ -15,7 +16,7 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
-class MiniMaxGame extends Game {
+public class MiniMaxGame extends Game {
 
     private static final ConcurrentMap<String, int[]> NEXT_BEST_MOVES;
     private static final DB DB;
@@ -27,7 +28,7 @@ class MiniMaxGame extends Game {
                 .createOrOpen();
     }
 
-    Optional<Integer> getFieldNumberForNextBestMove() {
+    public Optional<Integer> getFieldNumberForNextBestMove() {
         if (!canContinue()) {
             return Optional.empty();
         }
@@ -113,7 +114,7 @@ class MiniMaxGame extends Game {
         return gameValue;
     }
 
-    enum Player {
+    public enum Player {
         Player1,
         Player2
     }

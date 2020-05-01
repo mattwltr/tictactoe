@@ -1,5 +1,3 @@
 .idea
-tictactoe.game/target
-tictactoe.app/target
+*target*
 *.iml
-/db/matt.wltr.labs.tictactoe.player.minimax.MiniMaxGame
