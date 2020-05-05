@@ -6,6 +6,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -110,12 +111,39 @@ public class Game {
                 .collect(Collectors.toList());
     }
 
+    public List<Integer> getFreeFieldNumbers(Move move) {
+        if (move == null) {
+            return IntStream.rangeClosed(1, 9)
+                    .boxed()
+                    .collect(Collectors.toList());
+        }
+        Set<Move> movesUntilMove = getMovesUntilMove(move);
+        return IntStream.rangeClosed(1, 9)
+                .boxed()
+                .parallel()
+                .filter(integer -> movesUntilMove.parallelStream().map(Move::getFieldNumber).noneMatch(fieldNumber -> fieldNumber == integer.intValue()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * @param move
+     * @return a set of move until a certain move was player (move incl.)
+     */
+    private Set<Move> getMovesUntilMove(Move move) {
+        if (!moves.contains(move)) {
+            throw new IllegalArgumentException("Move is not part of this game");
+        }
+        int index = new ArrayList<>(moves).indexOf(move);
+        return moves.stream()
+                .limit(index + 1)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
     /**
      * Log the current game state
      */
     public void log() {
         String text = """
-                
                 ┌---┬-─-┬-─-┐
                 │{6}│{7}│{8}│
                 ├─-─┼───┼---┤
@@ -150,6 +178,8 @@ public class Game {
         getWinner().ifPresentOrElse(
                 player -> LOGGER.log(Level.INFO, "{0} won!", getSymbol(player)),
                 () -> LOGGER.log(Level.INFO,"It's a draw."));
+        player1.onGameEnd();
+        player2.onGameEnd();
     }
 
     /**
@@ -184,6 +214,10 @@ public class Game {
     }
 
     public Optional<Move> getMove(int fieldNumber) {
+        return getMove(moves, fieldNumber);
+    }
+
+    private Optional<Move> getMove(Set<Move> moves, int fieldNumber) {
         return moves.parallelStream().filter(move -> move.getFieldNumber() == fieldNumber).findFirst();
     }
 
@@ -191,10 +225,34 @@ public class Game {
         return player.equals(player1) ? 'x' : 'o';
     }
 
+    /**
+     * @return a string-typed hash of the current game state
+     */
     public String getBoardHash() {
         return IntStream.rangeClosed(1, 9)
                 .boxed()
-                .map(integer -> getMove(integer).map(move -> move.getPlayer().equals(player1) ? "x" : "o").orElse("-"))
+                .map(fieldNumber -> getMoveAsString(getMove(fieldNumber)))
+                .collect(Collectors.joining());
+    }
+
+    private String getMoveAsString(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Move> optionalMove) {
+        return optionalMove.map(move -> move.getPlayer().equals(player1) ? "x" : "o").orElse("-");
+    }
+
+    /**
+     * @return a string-typed hash of the game state when a certain move was played
+     */
+    public String getBoardHash(Move move) {
+        if (move == null) {
+            return IntStream.rangeClosed(1, 9)
+                    .boxed()
+                    .map(fieldNumber -> "-")
+                    .collect(Collectors.joining());
+        }
+        Set<Move> movesUntilMove = getMovesUntilMove(move);
+        return IntStream.rangeClosed(1, 9)
+                .boxed()
+                .map(fieldNumber -> getMoveAsString(getMove(movesUntilMove, fieldNumber)))
                 .collect(Collectors.joining());
     }
 

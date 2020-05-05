@@ -1,6 +1,6 @@
 package matt.wltr.labs.tictactoe.game.series;
 
-public class GameStatistic {
+public class Statistic {
 
     private int iteration;
 

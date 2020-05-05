@@ -22,6 +22,13 @@
 
         <dependency>
             <groupId>matt.wltr.labs</groupId>
+            <artifactId>tictactoe.player.human</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>matt.wltr.labs</groupId>
             <artifactId>tictactoe.player.random</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
@@ -30,6 +37,13 @@
         <dependency>
             <groupId>matt.wltr.labs</groupId>
             <artifactId>tictactoe.player.minimax</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>matt.wltr.labs</groupId>
+            <artifactId>tictactoe.player.evolution.tabularquality</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>

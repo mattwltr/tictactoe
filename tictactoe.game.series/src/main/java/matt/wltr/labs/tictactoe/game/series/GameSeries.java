@@ -16,6 +16,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +31,8 @@ public class GameSeries {
     private final PlayerBuilder<?> player1Builder;
     private final PlayerBuilder<?> player2Builder;
     private final int repetitions;
+
+    private String description;
 
     public GameSeries(@NotNull PlayerBuilder<?> player1Builder, @NotNull PlayerBuilder<?> player2Builder, int repetitions) {
         this.player1Builder = player1Builder;
@@ -52,14 +55,17 @@ public class GameSeries {
         SeriesStatistic seriesStatistic = SeriesStatistic.ofSeries(this);
         URL evolutionChartUrl = serveEvolutionChart(seriesStatistic);
         DecimalFormat decimalFormat = new DecimalFormat("##0.0");
-        LOGGER.log(Level.INFO, "Player                        | P1 Win | P2 Win |   Draw | Evolution");
-        LOGGER.log(Level.INFO, "=========================================================================================");
-        LOGGER.log(Level.INFO, String.format("%-30s| %5s%% | %5s%% | %5s%% | %s\n",
-                player1Builder.getType().getSimpleName().concat(" - ").concat(player2Builder.getType().getSimpleName()),
-                decimalFormat.format(seriesStatistic.getGameStatistics().get(seriesStatistic.getGameStatistics().size() - 1).getPercentagePlayer1Wins()),
-                decimalFormat.format(seriesStatistic.getGameStatistics().get(seriesStatistic.getGameStatistics().size() - 1).getPercentagePlayer2Wins()),
-                decimalFormat.format(seriesStatistic.getGameStatistics().get(seriesStatistic.getGameStatistics().size() - 1).getPercentageDraws()),
-                evolutionChartUrl.toString()));
+        LOGGER.log(Level.INFO, String.format("""
+                | P1 Win %25s | P2 Win %25s |   Draw | Evolution                      
+                ===============================================================================================================
+                | %31s%% | %31s%% | %5s%% | %-30s%s""",
+                player1Builder.getType().getSimpleName(),
+                player2Builder.getType().getSimpleName(),
+                decimalFormat.format(seriesStatistic.getPercentagePlayer1Wins()),
+                decimalFormat.format(seriesStatistic.getPercentagePlayer2Wins()),
+                decimalFormat.format(seriesStatistic.getPercentageDraws()),
+                evolutionChartUrl.toString(),
+                getDescription().map(description -> "\n\n" + description).orElse("")));
     }
 
     private URL serveEvolutionChart(@NotNull SeriesStatistic seriesStatistic) {
@@ -87,5 +93,13 @@ public class GameSeries {
 
     public Set<Game> getGames() {
         return Collections.unmodifiableSet(games);
+    }
+
+    public Optional<String> getDescription() {
+        return Optional.ofNullable(description);
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

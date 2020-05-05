@@ -18,11 +18,18 @@ import java.util.stream.Collectors;
 
 public class MiniMaxGame extends Game {
 
+    /**
+     * The distance weight is a small modification to the original Minimax algorithm that adds a weight to each step until the game's end
+     * (either loss, win or draw). That means the less moves are necessary to end the game, the higher the score will be that is used to determine
+     * which move is the next best choice.
+     */
+    private static final double DISTANCE_WEIGHT = 0.9;
+
     private static final ConcurrentMap<String, int[]> NEXT_BEST_MOVES;
     private static final DB DB;
 
     static {
-        DB = DBMaker.fileDB("db//" + MiniMaxGame.class.getName()).fileMmapEnable().checksumHeaderBypass().make();
+        DB = DBMaker.fileDB("db//" + MiniMaxGame.class.getSimpleName()).fileMmapEnable().checksumHeaderBypass().make();
         NEXT_BEST_MOVES = DB
                 .hashMap("nextBestMoves", Serializer.STRING, Serializer.INT_ARRAY)
                 .createOrOpen();
@@ -33,20 +40,11 @@ public class MiniMaxGame extends Game {
             return Optional.empty();
         }
         if (moves.isEmpty()) {
-            // this is the most computation-intensive move which would in fact result with all fields having the same score,
-            // so we're taking a shortcut and return a random field number
-            return Optional.of(Math.max(1, new Random().nextInt(10)));
-        }
-        if (moves.size() == 1) {
-            // this is a computation-intensive move as well which would result in either a corner field (1,3,7,9) or the middle (5) so we're making
-            // the decision with a simple if/else
-            Move move = moves.iterator().next();
-            if (move.getFieldNumber() == 5) {
-                int[] fieldNumbers = new int[]{1, 3, 7, 9};
-                return Optional.of(fieldNumbers[new Random().nextInt(fieldNumbers.length)]);
-            } else {
-                return Optional.of(5);
-            }
+            // This is the most computation-intensive move which would in fact result with all fields having the same score, assuming the opponent plays
+            // perfectly (which would result in a draw). If we assume the opponent does not play perfectly, the highest chance to win is one of
+            // the corner fields (1,3,7,9), so we choose one randomly.
+            int[] fieldNumbers = new int[]{1, 3, 7, 9};
+            return Optional.of(fieldNumbers[new Random().nextInt(fieldNumbers.length)]);
         }
         Player player = getPlayerForNextMove().map(playerForNextMove -> playerForNextMove.equals(player1) ? Player.Player1 : Player.Player2).orElseThrow();
         return Optional.of(getRandomPossibleNextFieldNumber(player));
@@ -58,11 +56,11 @@ public class MiniMaxGame extends Game {
         if (NEXT_BEST_MOVES.containsKey(boardHash)) {
             fieldNumbers = NEXT_BEST_MOVES.get(boardHash);
         } else {
-            Map<MiniMaxGame, Integer> scoredMiniMaxGames = getPossibleNextGames().parallelStream().collect(Collectors.toMap(game -> game, game -> game.getGameValue(player)));
-            int gameValue = getGameValue(player);
-            fieldNumbers = scoredMiniMaxGames.entrySet().parallelStream()
-                    .filter(miniMaxGameIntegerEntry -> miniMaxGameIntegerEntry.getValue() == gameValue)
-                    .map(miniMaxGameIntegerEntry -> miniMaxGameIntegerEntry.getKey()
+            Map<MiniMaxGame, Double> scoredMiniMaxGames = getPossibleNextGames().stream().collect(Collectors.toMap(game -> game, game -> game.getGameValue(player)));
+            Map.Entry<MiniMaxGame, Double> maxEntry = scoredMiniMaxGames.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow();
+            fieldNumbers = scoredMiniMaxGames.entrySet().stream()
+                    .filter(miniMaxGameDoubleEntry -> miniMaxGameDoubleEntry.getValue().doubleValue() == maxEntry.getValue())
+                    .map(miniMaxGameDoubleEntry -> miniMaxGameDoubleEntry.getKey()
                             .getLastMove()
                             .map(Move::getFieldNumber)
                             .orElseThrow())
@@ -90,25 +88,25 @@ public class MiniMaxGame extends Game {
         }).collect(Collectors.toList());
     }
 
-    private int getGameValue(Player player) {
-        int gameValue;
+    private double getGameValue(Player player) {
+        double gameValue;
         switch (getStatus()) {
             case IN_PROGRESS -> gameValue = getPlayerForNextMove().map(playerForNextMove -> {
                 if (playerForNextMove.equals(player1) && player == Player.Player2 || playerForNextMove.equals(player2) && player == Player.Player1) {
-                    return getPossibleNextGames().parallelStream()
+                    return DISTANCE_WEIGHT * getPossibleNextGames().parallelStream()
                             .map(possibleNextGame -> possibleNextGame.getGameValue(player))
-                            .min(Integer::compareTo)
+                            .min(Double::compareTo)
                             .orElseThrow();
                 } else {
-                    return getPossibleNextGames().parallelStream()
+                    return DISTANCE_WEIGHT * getPossibleNextGames().parallelStream()
                             .map(possibleNextGame -> possibleNextGame.getGameValue(player))
-                            .max(Integer::compareTo)
+                            .max(Double::compareTo)
                             .orElseThrow();
                 }
             }).orElseThrow();
-            case DRAW -> gameValue = 0;
-            case PLAYER_1_WON -> gameValue = player == Player.Player1 ? 1 : -1;
-            case PLAYER_2_WON -> gameValue = player == Player.Player2 ? 1 : -1;
+            case DRAW -> gameValue = 0D;
+            case PLAYER_1_WON -> gameValue = player == Player.Player1 ? 1D : -1D;
+            case PLAYER_2_WON -> gameValue = player == Player.Player2 ? 1D : -1D;
             default -> throw new IllegalStateException(MessageFormat.format("Game status {0} not yet supported", getStatus().name()));
         }
         return gameValue;

@@ -15,9 +15,10 @@
         <module>tictactoe.game.series</module>
         <module>tictactoe.util</module>
         <module>tictactoe.player.human</module>
-        <module>tictactoe.player.minimax</module>
         <module>tictactoe.player.random</module>
-        <module>tictactoe.player.tabularquality</module>
+        <module>tictactoe.player.minimax</module>
+        <module>tictactoe.player.evolution</module>
+        <module>tictactoe.player.evolution.tabularquality</module>
     </modules>
 
     <properties>

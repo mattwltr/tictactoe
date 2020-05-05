@@ -9,4 +9,8 @@ public interface Player {
     Game getGame();
 
     String getName();
+
+    default void onGameEnd() {
+        // no default action
+    }
 }
