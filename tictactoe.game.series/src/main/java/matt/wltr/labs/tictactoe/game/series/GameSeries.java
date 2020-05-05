@@ -51,7 +51,7 @@ public class GameSeries {
         }
     }
 
-    public void printResults() {
+    public void logResults() {
         SeriesStatistic seriesStatistic = SeriesStatistic.ofSeries(this);
         URL evolutionChartUrl = serveEvolutionChart(seriesStatistic);
         DecimalFormat decimalFormat = new DecimalFormat("##0.0");
@@ -77,7 +77,8 @@ public class GameSeries {
             String responseMarkup = chartTemplate
                     .replace("$seriesStatistic", JsonbBuilder.create().toJson(seriesStatistic))
                     .replace("$player1", player1Builder.getType().getSimpleName())
-                    .replace("$player2", player2Builder.getType().getSimpleName());
+                    .replace("$player2", player2Builder.getType().getSimpleName())
+                    .replace("$description", getDescription().orElse(""));
             httpExchange.sendResponseHeaders(200, responseMarkup.length());
             OutputStream outputStream = httpExchange.getResponseBody();
             outputStream.write(responseMarkup.getBytes());

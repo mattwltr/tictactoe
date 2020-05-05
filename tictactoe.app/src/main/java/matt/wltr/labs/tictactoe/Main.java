@@ -71,7 +71,7 @@ public class Main {
         tabularQualityVsMiniMax.start();
         seriesList.add(tabularQualityVsMiniMax);
 
-        seriesList.forEach(GameSeries::printResults);
+        seriesList.forEach(GameSeries::logResults);
 
         cleanup();
         promptExit();

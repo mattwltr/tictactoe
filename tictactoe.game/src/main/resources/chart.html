@@ -1,11 +1,22 @@
 <html lang="en">
 <head>
     <title>player evolution</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            background: #2B2B2B;
+            color: #93BABA;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px;
+        }
+        .description {
+            display: none;
+            width: 590px;
+            text-align: justify;
         }
     </style>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -36,21 +47,42 @@
             data.addRows(rows);
 
             const chart = new google.visualization.LineChart(document.getElementById('chart'));
+            google.visualization.events.addListener(chart, 'ready', () => {
+                document.querySelector('.description').style.display = 'block';
+            });
             chart.draw(data, {
                 width: 900,
                 height: 500,
+                curveType: 'function',
                 legend: {
-                    position: 'bottom'
+                    position: 'bottom',
+                    textStyle: {
+                        fontName: 'Open Sans',
+                        color: '#93BABA'
+                    }
                 },
+                backgroundColor: '#2B2B2B',
                 hAxis: {
                     gridlines: {
-                        multiple: 1
+                        multiple: 1,
+                        color: '#3C3F41'
+                    },
+                    textStyle: {
+                        fontName: 'Open Sans',
+                        color: '#93BABA'
                     }
                 },
                 vAxis: {
                     viewWindow: {
                         min: 0,
                         max: 100
+                    },
+                    gridlines: {
+                        color: '#3C3F41'
+                    },
+                    textStyle: {
+                        fontName: 'Open Sans',
+                        color: '#93BABA'
                     }
                 }
             });
@@ -58,6 +90,9 @@
     </script>
 </head>
 <body>
-<div id="chart"></div>
+    <div id="chart"></div>
+    <div class="description">
+        $description
+    </div>
 </body>
 </html>
